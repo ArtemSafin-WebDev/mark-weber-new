@@ -16,13 +16,15 @@ export default class MainSliderNew {
         this.filterClicks = false;
         this.filterClicksDelay = 200;
         this.activeIndex = 0;
-        this.threshold = 250;
+
         this.maximumOffset = 400;
         this.scaleMultiplier = 1.4;
         this.initialCardWidth = this.calculateInitialCardWidth();
+        this.threshold = this.initialCardWidth * 0.9;
         this.leftBorder = this.calculateLeftBorder();
         this.touchContainer = new Hammer(this.cardsContainer);
         this.cardPositions = this.calculateCardPositions();
+
         this.initialSetup();
         this.bindListeners();
     }
@@ -51,29 +53,35 @@ export default class MainSliderNew {
 
     initialSetup = () => {
         const initialActiveCard = this.cards[this.activeIndex];
-        this.cards.forEach(card => card.classList.remove('active'));
+        this.cards.forEach(card => {
+            gsap.set(card, {
+                width: this.initialCardWidth
+            });
+            card.classList.remove('active');
+        });
 
         initialActiveCard.classList.add('active');
 
         gsap.set(initialActiveCard, {
             width: this.initialCardWidth * this.scaleMultiplier
-        })
-    }
+        });
 
+        this.cardPositions = this.calculateCardPositions();
+    };
 
     calculateCardPositions = () => {
         const positions = this.cards.map((card, cardIndex) => {
             return {
-                card, 
-                x: this.calculateCardOffsetRelativeToBorder(cardIndex)
-            }
+                card,
+                xRelativeToLeft: this.calculateCardOffsetRelativeToBorder(cardIndex),
+                xTransform: 0
+            };
         });
 
         console.log('Calculated card positions', positions);
 
         return positions;
-    }
-    
+    };
 
     handlePanStart = event => {
         console.log('Panstart');
@@ -87,6 +95,18 @@ export default class MainSliderNew {
             return;
         }
 
+        this.cardPositions.forEach(cardPosition => {
+            if (cardPosition.xRelativeToLeft + event.deltaX <= 0) {
+                gsap.set(cardPosition.card, {
+                    x: 0
+                });
+            } else {
+                gsap.set(cardPosition.card, {
+                    x: event.deltaX
+                });
+            }
+        });
+
         console.log('Panmove');
     };
 
@@ -94,13 +114,19 @@ export default class MainSliderNew {
         console.log('Panend');
 
         if (Math.abs(event.deltaX) >= this.threshold) {
-            console.log('Threshold reached', event);
-
             const direction = event.offsetDirection === 1 ? 'right' : 'left';
 
-            console.log('Direction', direction);
+            console.log(`Slidechange happened in direction: ${direction}`);
 
             this.locked = true;
+        } else {
+            console.log('Slidechange not happened, returning slider to initial position');
+            this.cardPositions.forEach(cardPosition => {
+                gsap.to(cardPosition.card, {
+                    duration: 0.3,
+                    x: cardPosition.xTransform,
+                })
+            })
         }
 
         setTimeout(() => {
@@ -109,13 +135,12 @@ export default class MainSliderNew {
     };
 
     resizeHandler = () => {
-
         this.cards.forEach(card => {
             gsap.set(card, {
                 width: 'auto',
                 x: 0
             });
-        })
+        });
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.leftBorder = this.calculateLeftBorder();
         this.cardPositions = this.calculateCardPositions();
