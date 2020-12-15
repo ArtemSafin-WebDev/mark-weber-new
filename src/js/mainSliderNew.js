@@ -12,15 +12,18 @@ export default class MainSliderNew {
             return;
         }
         this.cardsContainer = element.querySelector('.main-slider__cards');
-        this.animating = false;
+        this.locked = false;
         this.filterClicks = false;
         this.filterClicksDelay = 200;
         this.activeIndex = 0;
         this.threshold = 250;
+        this.maximumOffset = 400;
         this.scaleMultiplier = 1.4;
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.leftBorder = this.calculateLeftBorder();
         this.touchContainer = new Hammer(this.cardsContainer);
+        this.cardPositions = this.calculateCardPositions();
+        this.initialSetup();
         this.bindListeners();
     }
 
@@ -46,16 +49,86 @@ export default class MainSliderNew {
         return leftBorder;
     };
 
-    handlePanStart = () => {};
+    initialSetup = () => {
+        const initialActiveCard = this.cards[this.activeIndex];
+        this.cards.forEach(card => card.classList.remove('active'));
 
-    handlePanMove = () => {};
+        initialActiveCard.classList.add('active');
 
-    handlePanEnd = () => {};
+        gsap.set(initialActiveCard, {
+            width: this.initialCardWidth * this.scaleMultiplier
+        })
+    }
+
+
+    calculateCardPositions = () => {
+        const positions = this.cards.map((card, cardIndex) => {
+            return {
+                card, 
+                x: this.calculateCardOffsetRelativeToBorder(cardIndex)
+            }
+        });
+
+        console.log('Calculated card positions', positions);
+
+        return positions;
+    }
+    
+
+    handlePanStart = event => {
+        console.log('Panstart');
+
+        this.filterClicks = true;
+    };
+
+    handlePanMove = event => {
+        if (this.locked) {
+            console.log('Panmove blocked');
+            return;
+        }
+
+        console.log('Panmove');
+    };
+
+    handlePanEnd = event => {
+        console.log('Panend');
+
+        if (Math.abs(event.deltaX) >= this.threshold) {
+            console.log('Threshold reached', event);
+
+            const direction = event.offsetDirection === 1 ? 'right' : 'left';
+
+            console.log('Direction', direction);
+
+            this.locked = true;
+        }
+
+        setTimeout(() => {
+            this.filterClicks = false;
+        }, this.filterClicksDelay);
+    };
 
     resizeHandler = () => {
+
+        this.cards.forEach(card => {
+            gsap.set(card, {
+                width: 'auto',
+                x: 0
+            });
+        })
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.leftBorder = this.calculateLeftBorder();
+        this.cardPositions = this.calculateCardPositions();
         console.log('Debounced resize handler');
+    };
+
+    preventPhantomClicks = event => {
+        if (event.target.matches('a') || event.target.closest('a')) {
+            if (this.filterClicks) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
     };
 
     bindListeners = () => {
@@ -63,38 +136,10 @@ export default class MainSliderNew {
 
         window.addEventListener('resize', debounce(this.resizeHandler, 200));
 
-        this.touchContainer.on('panstart', event => {
-            console.log('Panstart');
+        this.touchContainer.on('panstart', this.handlePanStart);
+        this.touchContainer.on('panmove', this.handlePanMove);
+        this.touchContainer.on('panend', this.handlePanEnd);
 
-            this.filterClicks = true;
-        });
-        this.touchContainer.on('panmove', event => {
-            console.log('Panmove');
-        });
-        this.touchContainer.on('panend', event => {
-            console.log('Panend');
-
-
-            if (Math.abs(event.deltaX) >= this.threshold) {
-                console.log('Threshold reached');
-
-                
-            }
-
-
-            setTimeout(() => {
-                this.filterClicks = false;
-            }, this.filterClicksDelay);
-        });
-
-
-        this.cardsContainer.addEventListener('click', event => {
-            if (event.target.matches('a') || event.target.closest('a')) {
-                if (this.filterClicks) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            }
-        })
+        this.cardsContainer.addEventListener('click', this.preventPhantomClicks);
     };
 }
