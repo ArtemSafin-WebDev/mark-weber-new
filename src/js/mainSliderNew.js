@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import Hammer from 'hammerjs';
 import { debounce } from 'lodash';
+import CardInnerSlider from './cardInnerSlider';
 
 export default class MainSliderNew {
     constructor(element) {
@@ -20,13 +21,14 @@ export default class MainSliderNew {
         this.maximumOffset = 400;
         this.scaleMultiplier = 1.4;
         this.initialCardWidth = this.calculateInitialCardWidth();
-        this.threshold = this.initialCardWidth * 0.9;
+        this.threshold = this.initialCardWidth * 0.7;
        
         this.touchContainer = new Hammer(this.cardsContainer);
         this.cardPositions = this.calculateCardPositions();
 
         this.initialSetup();
         this.bindListeners();
+        this.setupInnerSliders();
     }
 
     calculateInitialCardWidth = () => {
@@ -42,6 +44,13 @@ export default class MainSliderNew {
         return margin;
     };
 
+
+
+    setupInnerSliders = () => {
+        this.cards.forEach(card => {
+            new CardInnerSlider(card);
+        })
+    }
     
 
     initialSetup = () => {
