@@ -1623,7 +1623,8 @@ select:-webkit-autofill:focus {
        user-select: none; }
 
 .main-slider__card-container {
-  position: relative; }
+  position: relative;
+  cursor: pointer; }
   .main-slider__card-container::after {
     content: '';
     display: block;

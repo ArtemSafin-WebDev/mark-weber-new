@@ -93,6 +93,7 @@
 
 .main-slider__card-container {
     position: relative;
+    cursor: pointer;
     &::after {
         content: '';
         display: block;
