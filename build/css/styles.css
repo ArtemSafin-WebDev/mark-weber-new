@@ -2037,6 +2037,9 @@ select:-webkit-autofill:focus {
   grid-template-rows: 12rem repeat(3, 19rem) 12rem 16.2rem 14.8rem 27.2rem 14.8rem 16.2rem 12rem 14rem;
   margin-top: -6rem;
   margin-bottom: 14rem; }
+  @media only screen and (max-width: 968px) {
+    .cases__image-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 .cases__image-grid-card {
   -webkit-box-flex: 1;
