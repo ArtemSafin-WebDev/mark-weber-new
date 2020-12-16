@@ -87,7 +87,7 @@
 
 .main-slider__card {
     width: 22rem;
-    margin-right: 40px;
+    margin-right: 4rem;
     flex-shrink: 0;
     -webkit-user-select: none;
     -webkit-user-drag: none;
@@ -219,7 +219,7 @@
 
 .main-slider__card-controls-bullet {
     width: 0.5rem;
-    height: 8px;
+    height: .8rem;
     flex-grow: 1;
     margin-right: 2px;
     display: flex;
@@ -231,7 +231,7 @@
 }
 
 .main-slider__card-controls-bullet-inner {
-    height: 2px;
+    height: .2rem;
     width: 100%;
     background-color: rgba(white, 0.3);
     position: relative;

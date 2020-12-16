@@ -37,6 +37,9 @@ html {
     @include breakpoint(tablet) {
         font-size: 6px;
     }
+    @include breakpoint(small-tablet) {
+        font-size: 5px;
+    }
 }
 
 body {

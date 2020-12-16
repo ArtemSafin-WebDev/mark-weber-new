@@ -20,6 +20,11 @@
         grid-column: 2 / -1;
         grid-row: 1 / 2;
     }
+
+    @include breakpoint(small-tablet) {
+        min-height: 100rem;
+        
+    }
 }
 
 .intro__left-col {
