@@ -16,7 +16,7 @@ export default class MainSliderNew {
         this.filterClicks = false;
         this.filterClicksDelay = 200;
         this.activeIndex = 0;
-
+        this.marginRight = this.calculateMargin();
         this.maximumOffset = 400;
         this.scaleMultiplier = 1.4;
         this.initialCardWidth = this.calculateInitialCardWidth();
@@ -35,14 +35,11 @@ export default class MainSliderNew {
         return initialCardWidth;
     };
 
-    calculateCardOffsetRelativeToBorder = index => {
-        if (!this.cards[index]) {
-            throw new Error('Card does not exist');
-        }
-        const card = this.cards[index];
-        const offset = card.getBoundingClientRect().left - this.leftBorder;
-        console.log('Card offset relative to border', card, offset);
-        return offset;
+    calculateMargin = () => {
+        const styles = getComputedStyle(this.cards[0]);
+        const margin = parseInt(styles.marginRight, 10);
+        console.log('Calculated margin', margin);
+        return margin;
     };
 
     calculateLeftBorder = () => {
@@ -73,7 +70,7 @@ export default class MainSliderNew {
         const positions = this.cards.map((card, cardIndex) => {
             return {
                 card,
-                xRelativeToLeft: this.calculateCardOffsetRelativeToBorder(cardIndex),
+                cardIndex,
                 xTransform: 0
             };
         });
@@ -82,6 +79,12 @@ export default class MainSliderNew {
 
         return positions;
     };
+
+    unlockSlider = () => {
+        setTimeout(() => {
+            this.locked = false;
+        }, 300)
+    }
 
     handlePanStart = event => {
         console.log('Panstart');
@@ -95,38 +98,111 @@ export default class MainSliderNew {
             return;
         }
 
+        console.log('Panmove');
+
         this.cardPositions.forEach(cardPosition => {
-            if (cardPosition.xRelativeToLeft + event.deltaX <= 0) {
+            if (cardPosition.cardIndex <= this.activeIndex && event.offsetDirection === 2) {
                 gsap.set(cardPosition.card, {
-                    x: 0
+                    x: cardPosition.xTransform
                 });
             } else {
                 gsap.set(cardPosition.card, {
-                    x: event.deltaX
+                    x: cardPosition.xTransform + event.deltaX
                 });
             }
         });
 
-        console.log('Panmove');
+        if (Math.abs(event.deltaX) >= this.threshold) {
+            this.locked = true;
+            return;
+        }
     };
+    
 
     handlePanEnd = event => {
         console.log('Panend');
 
         if (Math.abs(event.deltaX) >= this.threshold) {
             const direction = event.offsetDirection === 1 ? 'right' : 'left';
-
+            const currentCard = this.cards[this.activeIndex];
             console.log(`Slidechange happened in direction: ${direction}`);
 
             this.locked = true;
+
+            if (direction === 'left' && this.cards[this.activeIndex + 1]) {
+                gsap.to(currentCard, {
+                    autoAlpha: 0,
+                    duration: 0.3
+                });
+
+                this.cardPositions.forEach(cardPosition => {
+                    if (cardPosition.cardIndex <= this.activeIndex) {
+                        return;
+                    } else if (cardPosition.cardIndex === this.activeIndex + 1) {
+                        const newTransform = cardPosition.xTransform - this.initialCardWidth * this.scaleMultiplier - this.marginRight;
+                        gsap.to(cardPosition.card, {
+                            duration: 0.3,
+                            x: newTransform,
+                            width: this.initialCardWidth * this.scaleMultiplier,
+                            onComplete: () => {
+                                cardPosition.xTransform = newTransform;
+                            }
+                        });
+                    } else {
+                        const newTransform = cardPosition.xTransform - this.initialCardWidth * this.scaleMultiplier - this.marginRight;
+                        gsap.to(cardPosition.card, {
+                            duration: 0.3,
+                            x: newTransform,
+                            onComplete: () => {
+                                cardPosition.xTransform = newTransform;
+                            }
+                        });
+                    }
+                });
+
+                this.activeIndex = this.activeIndex + 1;
+
+                this.unlockSlider();
+
+                // gsap.to(currentCard, {
+                //     autoAlpha: 0,
+                //     duration: 0.3
+                // });
+                // const nextCard = this.cardPositions.find(cardPosition => cardPosition.card === this.cards[this.activeIndex + 1]);
+
+                // console.log('Sliding next', nextCard);
+
+                // this.cardPositions.forEach(cardPosition => {
+                //     const realCardDistanceFromLeft = this.calculateCardOffsetRelativeToBorder(cardPosition.cardIndex);
+                //     console.log('Real card offset from left', cardPosition.card, realCardDistanceFromLeft);
+
+                //     if (cardPosition.card === currentCard) {
+                //         return;
+                //     } else if (cardPosition.card === nextCard.card) {
+                //         gsap.to(cardPosition.card, {
+                //             x: cardPosition.xTransform + event.deltaX - realCardDistanceFromLeft,
+                //             width: this.initialCardWidth * this.scaleMultiplier,
+                //             onComplete: () => {}
+                //         });
+                //     } else {
+
+                //     }
+                // });
+            }
+
+            if (direction === 'right' && this.cards[this.activeIndex - 1]) {
+                const nextCard = this.cards[this.activeIndex - 1];
+            }
         } else {
             console.log('Slidechange not happened, returning slider to initial position');
             this.cardPositions.forEach(cardPosition => {
                 gsap.to(cardPosition.card, {
                     duration: 0.3,
-                    x: cardPosition.xTransform,
-                })
-            })
+                    x: cardPosition.xTransform
+                });
+            });
+
+            this.unlockSlider();
         }
 
         setTimeout(() => {
@@ -143,6 +219,7 @@ export default class MainSliderNew {
         });
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.leftBorder = this.calculateLeftBorder();
+        this.marginRight = this.calculateMargin();
         this.cardPositions = this.calculateCardPositions();
         console.log('Debounced resize handler');
     };
