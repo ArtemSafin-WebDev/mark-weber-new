@@ -23,6 +23,20 @@ html {
     -webkit-text-size-adjust: 100%;
   
     @include noHighlight();
+
+
+    @include breakpoint(large-desktop) {
+        font-size: 9px;
+    }
+    @include breakpoint(desktop) {
+        font-size: 8px;
+    }
+    @include breakpoint(laptop) {
+        font-size: 7px;
+    }
+    @include breakpoint(tablet) {
+        font-size: 6px;
+    }
 }
 
 body {

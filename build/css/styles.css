@@ -951,6 +951,18 @@ html {
   font-size: 10px;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent; }
+  @media only screen and (max-width: 1600px) {
+    html {
+      font-size: 9px; } }
+  @media only screen and (max-width: 1400px) {
+    html {
+      font-size: 8px; } }
+  @media only screen and (max-width: 1200px) {
+    html {
+      font-size: 7px; } }
+  @media only screen and (max-width: 1024px) {
+    html {
+      font-size: 6px; } }
 
 body {
   min-width: 320px;
@@ -1275,6 +1287,8 @@ select:-webkit-autofill:focus {
     height: 2.4rem;
     display: block;
     fill: currentColor; }
+  .intro__scroll-down-link:hover {
+    color: rgba(255, 255, 255, 0.8); }
 
 .intro__slider {
   grid-row: 3 / 4;
@@ -1815,3 +1829,54 @@ select:-webkit-autofill:focus {
       -ms-flex-positive: 1;
           flex-grow: 1;
   color: white; }
+
+.main-slider__slider {
+  position: relative; }
+
+.main-slider__all-stories-link {
+  width: 17rem;
+  height: 17rem;
+  position: absolute;
+  top: 27rem;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  text-align: center;
+  font-weight: 500;
+  z-index: 20; }
+  .main-slider__all-stories-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #f9cc46;
+    border-radius: 50%;
+    -webkit-transition: -webkit-transform .3s;
+    transition: -webkit-transform .3s;
+    transition: transform .3s;
+    transition: transform .3s, -webkit-transform .3s; }
+  .main-slider__all-stories-link:link, .main-slider__all-stories-link:visited {
+    color: #24282b; }
+  .main-slider__all-stories-link:hover::before {
+    -webkit-transform: scale(1.08);
+            transform: scale(1.08);
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    transition: transform .3s ease-out, -webkit-transform .3s ease-out; }

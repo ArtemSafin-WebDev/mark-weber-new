@@ -69,6 +69,10 @@
         display: block;
         fill: currentColor;
     }
+
+    &:hover {
+        color: rgba(white, .8);
+    }
 }
 
 .intro__slider {
