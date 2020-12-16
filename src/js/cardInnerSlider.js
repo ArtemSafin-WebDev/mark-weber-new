@@ -61,7 +61,7 @@ export default class CardInnerSlider {
         this.images.forEach(image => image.classList.remove('active'));
         this.images[index].classList.add('active');
         this.paginationBullets.forEach(bullet => bullet.classList.remove('active'));
-        if (this.textSlides.length) {
+        if (this.textSlides.length && this.textSlides[index]) {
             this.textSlides.forEach(textSlide => textSlide.classList.remove('active'));
             this.textSlides[index].classList.add('active');
         }
@@ -131,6 +131,7 @@ export default class CardInnerSlider {
 
 
         this.clickableContainer.addEventListener('click', event => {
+            if (this.locked) return;
             const offsetX = event.offsetX;
             const clickableContainerWidth = this.clickableContainer.offsetWidth;
 

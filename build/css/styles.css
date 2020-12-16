@@ -1648,7 +1648,9 @@ select:-webkit-autofill:focus {
     background: #f9cc46;
     color: #24282b;
     padding-left: 0.4rem;
-    padding-right: 0.4rem; }
+    padding-right: 0.4rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone; }
   .main-slider__card-text.active {
     opacity: 1;
     visibility: inherit;
@@ -1773,9 +1775,16 @@ select:-webkit-autofill:focus {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  z-index: 80; }
+  z-index: 80;
+  opacity: 0;
+  visibility: hidden; }
   .main-slider__card-author:link, .main-slider__card-author:visited {
     color: white; }
+  .main-slider__card.active .main-slider__card-author {
+    opacity: 1;
+    visibility: inherit;
+    -webkit-transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
+    transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s; }
 
 .main-slider__card-author-avatar {
   width: 3rem;

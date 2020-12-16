@@ -22,7 +22,7 @@ export default class MainSliderNew {
         this.scaleMultiplier = 1.4;
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.threshold = this.initialCardWidth * 0.7;
-       
+        this.innerSliders = [];
         this.touchContainer = new Hammer(this.cardsContainer);
         this.cardPositions = this.calculateCardPositions();
 
@@ -47,8 +47,8 @@ export default class MainSliderNew {
 
 
     setupInnerSliders = () => {
-        this.cards.forEach(card => {
-            new CardInnerSlider(card);
+        this.innerSliders = this.cards.map(card => {
+            return new CardInnerSlider(card);
         })
     }
     
@@ -85,9 +85,17 @@ export default class MainSliderNew {
         return positions;
     };
 
+
+    lockSlider = () => {
+        this.locked = true;
+        this.innerSliders.forEach(innerSlider => innerSlider.lock())
+    }
+    
+
     unlockSlider = () => {
         setTimeout(() => {
             this.locked = false;
+            this.innerSliders.forEach(innerSlider => innerSlider.unlock())
         }, 300);
     };
 
@@ -104,7 +112,7 @@ export default class MainSliderNew {
         }
 
         if (Math.abs(event.deltaX) >= this.threshold && event.offsetDirection === 4) {
-            this.locked = true;
+            this.lockSlider();
             return;
         }
 
@@ -135,7 +143,7 @@ export default class MainSliderNew {
             const currentCard = this.cards[this.activeIndex];
             console.log(`Slidechange happened in direction: ${direction}`);
 
-            this.locked = true;
+            this.lockSlider();
 
             if (direction === 'left' && this.cards[this.activeIndex + 1]) {
                 gsap.to(currentCard, {
@@ -254,7 +262,7 @@ export default class MainSliderNew {
         this.activeIndex = 0;
         this.initialCardWidth = this.calculateInitialCardWidth();
         this.threshold = this.initialCardWidth * 0.9;
-        this.locked = false;
+        this.unlockSlider();
         this.marginRight = this.calculateMargin();
         this.cardPositions = this.calculateCardPositions();
 
