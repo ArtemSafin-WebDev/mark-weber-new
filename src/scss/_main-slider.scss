@@ -49,6 +49,10 @@
         color: var(--black);
     }
 
+    &:not(.active):hover {
+        color: var(--primary-color);
+    }
+
     &.active {
         font-weight: 600;
         &::before {
