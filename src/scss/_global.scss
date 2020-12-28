@@ -25,6 +25,11 @@ html {
     @include noHighlight();
 
 
+    @media screen and (min-width: 2600px) {
+        font-size: 14px;
+    }
+
+
     @include breakpoint(large-desktop) {
         font-size: 9px;
     }

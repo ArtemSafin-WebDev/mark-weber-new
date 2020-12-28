@@ -16,14 +16,10 @@ export default function AnchorLinks() {
 
                 const elementToScroll = document.getElementById(hash.replace(/^#to\-/, ''));
                 if (elementToScroll) {
-                    if (window.stickyNav) {
-                        gsap.to(window, { duration: 2, ease: "power2.out", scrollTo: {
-                            y: elementToScroll,
-                           
-                        } });
-                    } else {
-                        gsap.to(window, { duration: 2, ease: "power2.out", scrollTo: elementToScroll });
-                    }
+                    gsap.to(window, { duration: 2, ease: "power2.out", scrollTo: {
+                        y: elementToScroll,
+                        autoKill: true
+                    } });
                   
                 }
             }

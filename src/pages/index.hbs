@@ -10,9 +10,18 @@
                 </p>
             </div>
             <h3 class="intro__services">
-                Сайты<br>
-                Приложения <br>
-                Экспертиза
+                <a href="#" class="intro__services-link">
+                    Сайты
+                </a>
+                <a href="#" class="intro__services-link">
+                    Приложения
+                </a>
+                <a href="#" class="intro__services-link">
+                    Экспертиза
+                </a>
+
+
+
             </h3>
             <a href="#to-main-slider" class="intro__scroll-down-link">
                 <svg width="24" height="24" aria-hidden="true" class="icon-scroll-down">
@@ -23,8 +32,10 @@
                 <div class="intro__slider-content">
                     <div class="intro__slider-cards">
                         <div class="intro__slider-card">
-                            <img src="img/iphone.png" alt="" class="intro__slider-card-image"
-                                style="transform: translate(25%, 12%);">
+                            <div class="intro__slider-card-image-wrapper" style="transform: translate(25%, 21%);">
+                                <img src="img/iphone.png" alt="" class="intro__slider-card-image">
+                            </div>
+
                             <div class="intro__slider-card-type">
                                 <div class="intro__slider-card-category">
                                     Свежий проект
@@ -39,8 +50,10 @@
 
                         </div>
                         <div class="intro__slider-card">
-                            <img src="img/iphone.png" alt="" class="intro__slider-card-image"
-                                style="transform: translate(25%, 12%);">
+                            <div class="intro__slider-card-image-wrapper" style="transform: translate(25%, 21%);">
+                                <img src="img/iphone.png" alt="" class="intro__slider-card-image">
+                            </div>
+
                             <div class="intro__slider-card-type">
                                 <div class="intro__slider-card-category">
                                     Свежий проект
@@ -55,8 +68,10 @@
 
                         </div>
                         <div class="intro__slider-card">
-                            <img src="img/iphone.png" alt="" class="intro__slider-card-image"
-                                style="transform: translate(25%, 12%);">
+                            <div class="intro__slider-card-image-wrapper" style="transform: translate(25%, 21%);">
+                                <img src="img/iphone.png" alt="" class="intro__slider-card-image">
+                            </div>
+
                             <div class="intro__slider-card-type">
                                 <div class="intro__slider-card-category">
                                     Свежий проект
@@ -71,8 +86,10 @@
 
                         </div>
                         <div class="intro__slider-card">
-                            <img src="img/iphone.png" alt="" class="intro__slider-card-image"
-                                style="transform: translate(25%, 12%);">
+                            <div class="intro__slider-card-image-wrapper" style="transform: translate(25%, 21%);">
+                                <img src="img/iphone.png" alt="" class="intro__slider-card-image">
+                            </div>
+
                             <div class="intro__slider-card-type">
                                 <div class="intro__slider-card-category">
                                     Свежий проект
@@ -288,7 +305,7 @@
 </section>
 
 
-<section class="cases">
+<section class="cases js-cases">
     <div class="container">
         <div class="cases__top-nav">
             <div class="cases__top-nav-intro-row">
@@ -310,7 +327,7 @@
                 </h2>
 
                 <nav class="cases__top-navigation">
-                    <a href="#" class="cases__top-navigation-link active">
+                    <a href="#" class="cases__top-navigation-link active" data-all-categories="">
                         <span class="cases__top-navigation-link-text">
                             Все подряд
                         </span>
@@ -319,7 +336,7 @@
                             56
                         </span>
                     </a>
-                    <a href="#" class="cases__top-navigation-link">
+                    <a href="#" class="cases__top-navigation-link" data-category="websites">
 
                         <span class="cases__top-navigation-link-text">
                             Сайты
@@ -328,7 +345,7 @@
                             43
                         </span>
                     </a>
-                    <a href="#" class="cases__top-navigation-link">
+                    <a href="#" class="cases__top-navigation-link" data-category="applications">
                         <span class="cases__top-navigation-link-text">
                             Приложения
                         </span>
@@ -336,7 +353,7 @@
                             5
                         </span>
                     </a>
-                    <a href="#" class="cases__top-navigation-link">
+                    <a href="#" class="cases__top-navigation-link" data-category="branding">
 
                         <span class="cases__top-navigation-link-text">
                             Брендинг
@@ -359,10 +376,10 @@
         </div>
 
         <div class="cases__image-grid">
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="websites">
                 <img data-src="img/cases/1.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="applications">
                 <img data-src="img/cases/2.jpg" alt="" class="cases__image-grid-card-image lazyload">
                 <div class="cases__image-grid-card-content">
                     <div class="cases__image-grid-card-content-type">
@@ -373,25 +390,25 @@
                     </h3>
                 </div>
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="websites">
                 <img data-src="img/cases/3.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="applications">
                 <img data-src="img/cases/4.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="websites">
                 <img data-src="img/cases/5.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="branding">
                 <img data-src="img/cases/6.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="applications">
                 <img data-src="img/cases/7.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="branding">
                 <img data-src="img/cases/8.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
-            <a href="#" class="cases__image-grid-card">
+            <a href="#" class="cases__image-grid-card" data-category="websites">
                 <img data-src="img/cases/9.jpg" alt="" class="cases__image-grid-card-image lazyload">
             </a>
         </div>

@@ -4,6 +4,7 @@
     top: 0;
     width: 100%;
     color: white;
+    z-index: 700;
 }
 
 .page-header__row {
@@ -13,10 +14,21 @@
     min-height: var(--header-height);
 }
 
-.page-header__heading {
+.page-header__about-link {
     font-size: 1.5rem;
     line-height: 1.8rem;
     font-weight: 400;
+    transition: color .2s;
+    justify-self: flex-start;
+    transition: color .2s;
+    &:link,
+    &:visited {
+        color: white;
+    }
+
+    &:hover {
+        color: rgba(white, .8);
+    }
 }
 
 
@@ -57,8 +69,13 @@
     line-height: 1.8rem;
     // letter-spacing: -0.02em;
     flex-shrink: 0;
+    transition: color .2s;
     &:link,
     &:visited {
-        color: #ffffff;
+        color: white;
+    }
+
+    &:hover {
+        color: rgba(white, .8);
     }
 }
