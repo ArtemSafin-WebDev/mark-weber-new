@@ -22,7 +22,7 @@ export default class CardInnerSlider {
 
         this.setActiveSlide(this.activeIndex);
 
-        this.autoplay(this.activeIndex);
+       
     }
 
 
@@ -72,6 +72,11 @@ export default class CardInnerSlider {
         this.activeIndex = index;
     };
 
+
+    onAutoplayEnd = (callback) => {
+        callback();
+    }
+
     autoplay = startIndex => {
         this.paginationBullets.forEach((bullet, bulletIndex) => {
             if (bulletIndex < startIndex) {
@@ -106,6 +111,22 @@ export default class CardInnerSlider {
         );
     };
 
+
+    startAutoplay = () => {
+        this.setActiveSlide(0);
+        this.autoplay(this.activeIndex);
+    }
+
+    killAutoplay = () => {
+        this.setActiveSlide(0);
+
+        this.paginationBullets.forEach(bullet => {
+            gsap.set(bullet, {
+                '--slider-progress': 0
+            });
+            gsap.killTweensOf(bullet);
+        });
+    }
 
     handleClick = (index) => {
         this.setActiveSlide(index);

@@ -44,14 +44,11 @@ export default class MainSliderNew {
         return margin;
     };
 
-
-
     setupInnerSliders = () => {
         this.innerSliders = this.cards.map(card => {
             return new CardInnerSlider(card);
-        })
-    }
-    
+        });
+    };
 
     initialSetup = () => {
         const initialActiveCard = this.cards[this.activeIndex];
@@ -85,17 +82,15 @@ export default class MainSliderNew {
         return positions;
     };
 
-
     lockSlider = () => {
         this.locked = true;
-        this.innerSliders.forEach(innerSlider => innerSlider.lock())
-    }
-    
+        this.innerSliders.forEach(innerSlider => innerSlider.lock());
+    };
 
     unlockSlider = () => {
         setTimeout(() => {
             this.locked = false;
-            this.innerSliders.forEach(innerSlider => innerSlider.unlock())
+            this.innerSliders.forEach(innerSlider => innerSlider.unlock());
         }, 300);
     };
 
@@ -113,7 +108,7 @@ export default class MainSliderNew {
 
         if (Math.abs(event.deltaX) >= this.threshold && event.offsetDirection === 4) {
             this.lockSlider();
-            this.exitPanning();
+
             return;
         }
 
@@ -136,25 +131,75 @@ export default class MainSliderNew {
         });
     };
 
-
     goToSlide = index => {
+        if (!this.cards[index] || index <= this.activeIndex) return;
+        this.lockSlider();
+        this.cardPositions.forEach(cardPosition => {
+            if (cardPosition.cardIndex <= this.activeIndex) {
+                cardPosition.card.classList.remove('active');
+                gsap.to(cardPosition.card, {
+                    autoAlpha: 0,
+                    duration: 0.3,
+                    scale: 0,
+                    width: this.initialCardWidth * this.scaleMultiplier,
+                });
+                return;
+            } else if (cardPosition.cardIndex > this.activeIndex && cardPosition.cardIndex < index) {
+                const newTransform =
+                    cardPosition.xTransform - this.initialCardWidth * this.scaleMultiplier * (cardPosition.cardIndex - this.activeIndex) - this.marginRight * (index - this.activeIndex);
+                cardPosition.card.classList.remove('active');
+                gsap.to(cardPosition.card, {
+                    duration: 0.3,
+                    x: newTransform,
+                    width: this.initialCardWidth * this.scaleMultiplier,
+                    autoAlpha: 0,
+                    scale: 0,
+                    onComplete: () => {
+                        cardPosition.xTransform = newTransform;
+                    }
+                });
+            } else if (cardPosition.cardIndex === index) {
+                const newTransform =
+                    cardPosition.xTransform - this.initialCardWidth * this.scaleMultiplier * (cardPosition.cardIndex - this.activeIndex) - this.marginRight * (index - this.activeIndex)
+                console.log('New transform for main card', newTransform)
+                cardPosition.card.classList.add('active');
+                gsap.to(cardPosition.card, {
+                    duration: 0.3,
+                    x: newTransform,
+                    width: this.initialCardWidth * this.scaleMultiplier,
+                    autoAlpha: 1,
+                    scale: 1,
+                    onComplete: () => {
+                        cardPosition.xTransform = newTransform;
+                    }
+                });
+            } else {
+                const newTransform =
+                    cardPosition.xTransform - this.initialCardWidth * this.scaleMultiplier * (index - this.activeIndex) - this.marginRight * (index - this.activeIndex);
+                cardPosition.card.classList.remove('active');
+                gsap.to(cardPosition.card, {
+                    duration: 0.3,
+                    x: newTransform,
+                    width: this.initialCardWidth,
+                    autoAlpha: 1,
+                    scale: 1,
+                    onComplete: () => {
+                        cardPosition.xTransform = newTransform;
+                    }
+                });
+            }
+        });
 
-    }
+        this.activeIndex = index;
 
+        this.unlockSlider();
 
-
-    exitPanning = () => {
-        // console.log('Exiting panning', this.rootElement);
-        // this.rootElement.style.pointerEvents = 'none';
-
-       
-    }
-
+        
+    };
 
     prevSlide = () => {
         if (!this.cards[this.activeIndex - 1]) return;
         this.lockSlider();
-       
 
         this.cardPositions.forEach(cardPosition => {
             if (cardPosition.cardIndex < this.activeIndex - 1) {
@@ -164,8 +209,8 @@ export default class MainSliderNew {
                 gsap.to(cardPosition.card, {
                     autoAlpha: 1,
                     duration: 0.3,
-                    scale: 1,
-                })
+                    scale: 1
+                });
             } else if (cardPosition.cardIndex === this.activeIndex) {
                 const newTransform = cardPosition.xTransform + this.initialCardWidth * this.scaleMultiplier + this.marginRight;
                 cardPosition.card.classList.remove('active');
@@ -192,7 +237,7 @@ export default class MainSliderNew {
         this.activeIndex = this.activeIndex - 1;
 
         this.unlockSlider();
-    }
+    };
 
     nextSlide = () => {
         if (!this.cards[this.activeIndex + 1]) return;
@@ -202,7 +247,7 @@ export default class MainSliderNew {
         gsap.to(currentCard, {
             autoAlpha: 0,
             duration: 0.3,
-            scale: 0,
+            scale: 0
         });
 
         this.cardPositions.forEach(cardPosition => {
@@ -237,7 +282,7 @@ export default class MainSliderNew {
         this.activeIndex = this.activeIndex + 1;
 
         this.unlockSlider();
-    }
+    };
 
     handlePanEnd = event => {
         console.log('Panend');
@@ -302,7 +347,7 @@ export default class MainSliderNew {
                             autoAlpha: 1,
                             duration: 0.3,
                             scale: 1
-                        })
+                        });
                     } else if (cardPosition.cardIndex === this.activeIndex) {
                         const newTransform = cardPosition.xTransform + this.initialCardWidth * this.scaleMultiplier + this.marginRight;
                         cardPosition.card.classList.remove('active');
@@ -392,6 +437,13 @@ export default class MainSliderNew {
         this.touchContainer.on('panstart', this.handlePanStart);
         this.touchContainer.on('panmove', this.handlePanMove);
         this.touchContainer.on('panend', this.handlePanEnd);
+
+        // this.touchContainer.on('swipeleft', () => {
+        //     this.prevSlide();
+        // });
+        // this.touchContainer.on('swiperight', () => {
+        //     this.nextSlide();
+        // });
 
         this.cardsContainer.addEventListener('click', this.preventPhantomClicks);
     };
