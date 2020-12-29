@@ -46,9 +46,32 @@ export default class MainSliderNew {
 
     setupInnerSliders = () => {
         this.innerSliders = this.cards.map(card => {
-            return new CardInnerSlider(card);
+            const innerSlider = new CardInnerSlider(card);
+            innerSlider.onAutoplayEnd(() => {
+                innerSlider.killAutoplay();
+                console.log('Changing next slider with autoplay from card', card)
+                if (this.cards[this.activeIndex + 1]) {
+                    this.nextSlide();
+                } else {
+                    console.log('Reached end');
+                    innerSlider.killAutoplay();
+                }
+              
+            })
+            return innerSlider;
         });
+
+        this.unlockInnerSlider(this.activeIndex)
+
+        this.setAutoplay(this.activeIndex);
     };
+
+
+    setAutoplay = index => {
+       
+        this.innerSliders.forEach(slider => slider.killAutoplay());
+        this.innerSliders[index].startAutoplay();
+    }
 
     initialSetup = () => {
         const initialActiveCard = this.cards[this.activeIndex];
@@ -84,20 +107,29 @@ export default class MainSliderNew {
 
     lockSlider = () => {
         this.locked = true;
-        this.innerSliders.forEach(innerSlider => innerSlider.lock());
+        this.innerSliders.forEach(slider => slider.lock())
     };
 
     unlockSlider = () => {
         setTimeout(() => {
             this.locked = false;
-            this.innerSliders.forEach(innerSlider => innerSlider.unlock());
-        }, 300);
+            this.unlockInnerSlider(this.activeIndex)
+        }, 400);
     };
+
+
+    unlockInnerSlider = index => {
+        this.innerSliders.forEach(slider => slider.lock());
+        this.innerSliders[index].unlock();
+       
+    }
 
     handlePanStart = event => {
         console.log('Panstart');
 
         this.filterClicks = true;
+
+        this.innerSliders.forEach(slider => slider.lock())
     };
 
     handlePanMove = event => {
@@ -132,7 +164,7 @@ export default class MainSliderNew {
     };
 
     goToSlide = index => {
-        if (!this.cards[index] || index <= this.activeIndex) return;
+        if (this.locked || !this.cards[index] || index <= this.activeIndex) return;
         this.lockSlider();
         this.cardPositions.forEach(cardPosition => {
             if (cardPosition.cardIndex <= this.activeIndex) {
@@ -194,7 +226,7 @@ export default class MainSliderNew {
 
         this.unlockSlider();
 
-        
+        this.setAutoplay(this.activeIndex);
     };
 
     prevSlide = () => {
@@ -237,6 +269,8 @@ export default class MainSliderNew {
         this.activeIndex = this.activeIndex - 1;
 
         this.unlockSlider();
+
+        this.setAutoplay(this.activeIndex);
     };
 
     nextSlide = () => {
@@ -282,6 +316,8 @@ export default class MainSliderNew {
         this.activeIndex = this.activeIndex + 1;
 
         this.unlockSlider();
+
+        this.setAutoplay(this.activeIndex);
     };
 
     handlePanEnd = event => {
@@ -334,6 +370,8 @@ export default class MainSliderNew {
 
                 this.unlockSlider();
 
+                this.setAutoplay(this.activeIndex);
+
                 return;
             }
 
@@ -374,6 +412,8 @@ export default class MainSliderNew {
                 this.activeIndex = this.activeIndex - 1;
 
                 this.unlockSlider();
+
+                this.setAutoplay(this.activeIndex);
 
                 return;
             } else {
@@ -417,6 +457,8 @@ export default class MainSliderNew {
         this.cardPositions = this.calculateCardPositions();
 
         this.initialSetup();
+
+        this.setAutoplay(this.activeIndex);
         console.log('Debounced resize handler');
     };
 
@@ -438,12 +480,12 @@ export default class MainSliderNew {
         this.touchContainer.on('panmove', this.handlePanMove);
         this.touchContainer.on('panend', this.handlePanEnd);
 
-        // this.touchContainer.on('swipeleft', () => {
-        //     this.prevSlide();
-        // });
-        // this.touchContainer.on('swiperight', () => {
-        //     this.nextSlide();
-        // });
+        this.cards.forEach((card, cardIndex) => {
+            card.addEventListener('click', event => {
+                event.preventDefault();
+                this.goToSlide(cardIndex);
+            })
+        })
 
         this.cardsContainer.addEventListener('click', this.preventPhantomClicks);
     };
