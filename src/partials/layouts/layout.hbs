@@ -9,6 +9,8 @@
         window.MSInputMethodContext && document.documentMode && document.write('<script src="assets/js/ie11CustomProperties.js"><\x2fscript>');
     </script>
     <script src="assets/js/svgInject.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.min.css" />
     <title>
         {{ title }}
@@ -26,10 +28,11 @@
             {{#block "main"}}
 
             {{/block}}
-            
+
         </main>
         {{> footer }}
-        {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+        {{!--
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
         <script src="js/app.js"></script>
     </div>
 </body>

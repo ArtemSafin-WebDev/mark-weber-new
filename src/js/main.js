@@ -5,6 +5,8 @@ import IntroSlider from './introSlider';
 import AnchorLinks from './anchorLinks';
 import SectionsParallax from './sectionsParallax';
 import CasesFiltering from './casesFiltering';
+import Orb from './orb';
+import ExpertiseSlider from './expertiseSlider';
 
 document.addEventListener('DOMContentLoaded', function() {
     polyfills();
@@ -13,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
     AnchorLinks();
     SectionsParallax();
     CasesFiltering();
+    Orb();
+    ExpertiseSlider();
     window.mainSlider = new MainSlider(document.querySelector('.js-main-slider'));
 
 

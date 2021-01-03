@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function CasesFiltering() {
     const elements = Array.from(document.querySelectorAll('.js-cases'));
@@ -25,20 +26,25 @@ export default function CasesFiltering() {
             links.forEach(link => link.classList.remove('active'));
             link.classList.add('active');
 
-            filteredCards.forEach(card => {
-                grid.appendChild(card);
 
-                gsap.fromTo(
-                    card,
-                    {
-                        autoAlpha: 0
-                    },
-                    {
-                        autoAlpha: 1,
-                        duration: 0.4
-                    }
-                );
-            });
+            grid.append(...filteredCards);
+
+            ScrollTrigger.refresh();
+
+            // filteredCards.forEach(card => {
+            //     grid.appendChild(card);
+
+            //     gsap.fromTo(
+            //         card,
+            //         {
+            //             autoAlpha: 0
+            //         },
+            //         {
+            //             autoAlpha: 1,
+            //             duration: 1.7
+            //         }
+            //     );
+            // });
         };
 
         links.forEach(link => {

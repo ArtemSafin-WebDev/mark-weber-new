@@ -1,0 +1,205 @@
+.expertise {
+    padding-top: 14rem;
+    padding-bottom: 14rem;
+    background-color: #fff;
+    color: var(--black);
+}
+
+.expertise__nav {
+    padding-left: var(--left-column-width);
+    margin-bottom: 8rem;
+}
+
+.expertise__heading {
+    font-size: 3.2rem;
+    line-height: 3.8rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 4rem;
+    font-weight: 400;
+}
+
+.expertise__navigation-links {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    padding-top: 3.5rem;
+    border-top: 1px solid #24282b;
+}
+
+.expertise__navigation-link {
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    margin-right: 3rem;
+    margin-bottom: 2rem;
+    color: #bcc0c2;
+    flex-shrink: 0;
+    white-space: nowrap;
+    &:link,
+    &:visited {
+        color: #bcc0c2;
+    }
+
+    &:hover,
+    &.active {
+        color: #24282b;
+    }
+}
+
+.expertise__nav-slider {
+    width: 75%;
+    margin-bottom: 10rem;
+    .swiper-container {
+        overflow: visible;
+    }
+    // .swiper-slide {
+    //     width: 75%;
+    // }
+}
+
+.expertise__nav-slider-card {
+    color: #24282b;
+    font-weight: 600;
+    font-size: 12rem;
+    line-height: 14.4rem;
+    cursor: pointer;
+    &:link,
+    &:visited {
+        color: #24282b;
+    }
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-fill-color: rgba(36, 40, 43, 0);
+    -webkit-text-stroke-color: #9ba1a4;
+}
+
+.expertise__main-slider-card {
+    padding-left: var(--left-column-width);
+    display: flex;
+}
+
+.expertise__main-slider-card-left-col {
+    width: 50%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.expertise__main-slider-card-right-col {
+    width: 52rem;
+    flex-shrink: 0;
+    margin-left: 13rem;
+}
+
+.expertise__main-slider-card-text {
+    font-size: 3.2rem;
+    line-height: 3.8rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 8rem;
+}
+
+.expertise__main-slider-card-features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column-gap: 13rem;
+    grid-row-gap: 6rem;
+    margin-bottom: 8rem;
+}
+
+.expertise__main-slider-card-feature-heading {
+    font-size: 1.5rem;
+    line-height: 2.3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #24282b;
+    font-weight: 400;
+}
+
+.expertise__main-slider-card-feature-text {
+    font-size: 1.5rem;
+    line-height: 2.3rem;
+    letter-spacing: -0.02em;
+    padding-top: 1.5rem;
+}
+
+.expertise__main-slider-card-contact-link {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    color: white;
+    text-align: center;
+    flex-shrink: 0;
+    padding: 2rem 3rem;
+    background-color: var(--black);
+    transition: color .2s, background-color .2s;
+    display: inline-flex;
+    margin-bottom: 3rem;
+    align-self: flex-start;
+    &:link,
+    &:visited {
+        color: white;
+    }
+
+    &:hover {
+        background-color: var(--primary-color);
+        color: var(--black);
+    }
+}
+
+
+.expertise__main-slider-card-image-container {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--black);
+    margin-top: 1rem;
+    &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        padding-bottom: 140%;
+    }
+}
+
+.expertise__main-slider-card-image-parallax-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.expertise__main-slider-card-image {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 120%;
+    transform: translateX(-50%);
+    height: 100%;
+    max-width: none;
+    @include objectFitCover();
+}
+
+
+.expertise__partners {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.expertise__partners-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3rem;
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.expertise__partners-link-image {
+    max-width: 8.4rem;
+    max-height: 6.4rem;
+    width: auto;
+    height: auto;
+    @include objectFitContain();
+}
